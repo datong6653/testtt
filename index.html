@@ -3,17 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>115年密調在雲端</title>
+    <title>密掉在雲端</title>
     <style>
         /* 莫蘭迪色系定義 */
         :root {
-            --bg-color: #f2efeb;        /* 淺米灰底 */
+            --bg-color: #f2efeb;
             --card-bg: #ffffff;
-            --primary-blue: #8294a5;    /* 莫蘭迪藍灰 */
-            --primary-green: #96a48b;   /* 莫蘭迪綠灰 */
-            --text-main: #595757;       /* 深灰文字 */
-            --accent-red: #bda6a2;      /* 乾枯玫瑰色 */
+            --primary-blue: #8294a5;
+            --primary-green: #96a48b;
+            --text-main: #595757;
+            --accent-red: #bda6a2;
             --border-color: #d1d1d1;
+            /* 基礎字體大小變數 */
+            --base-font-size: 16px;
+        }
+
+        html {
+            font-size: var(--base-font-size);
         }
 
         body { 
@@ -23,6 +29,29 @@
             background: var(--bg-color); 
             color: var(--text-main); 
             -webkit-text-size-adjust: 100%; 
+        }
+
+        /* 字體調整控制列 */
+        .font-controls {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding: 0 5px;
+        }
+        .font-btn {
+            background: #e3e0d9;
+            border: 1px solid var(--border-color);
+            padding: 5px 12px;
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        .font-label {
+            font-size: 0.9rem;
+            color: #888;
         }
 
         .card { 
@@ -37,7 +66,7 @@
             color: var(--primary-blue); 
             border-left: 6px solid var(--primary-blue); 
             padding-left: 12px; 
-            font-size: 1.15rem; 
+            font-size: 1.2rem; 
             margin-top: 0; 
             letter-spacing: 1px;
         }
@@ -65,25 +94,26 @@
             border-radius: 10px; 
             margin: 10px 0; 
             border: 1px solid #e3e0d9; 
+            font-size: 1rem;
         }
         .schedule-item b { 
             color: var(--primary-green); 
             display: block; 
             margin-bottom: 4px; 
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
         .check-item { 
             display: flex; 
             align-items: center; 
             margin: 15px 0; 
-            font-size: 1rem; 
+            font-size: 1.1rem; 
             color: #6b6964;
             cursor: pointer;
         }
         input[type="checkbox"] { 
-            width: 22px; 
-            height: 22px; 
+            width: 24px; 
+            height: 24px; 
             margin-right: 12px; 
             accent-color: var(--primary-blue);
         }
@@ -95,7 +125,7 @@
             padding: 15px; 
             width: 100%; 
             border-radius: 10px; 
-            font-size: 1rem; 
+            font-size: 1.1rem; 
             font-weight: bold; 
             margin-top: 10px; 
             transition: background 0.3s;
@@ -103,11 +133,10 @@
         }
         .btn:active { background: #6a7a8a; }
         
-        /* 判斷結果配色 */
-        .result { margin-top: 15px; padding: 18px; border-radius: 10px; display: none; line-height: 1.8; }
-        .res-positive { background: #e9e0df; color: #8e6d6a; border: 1px solid #d6c5c2; } /* 陽性 */
-        .res-dirty { background: #e1e6ea; color: #6a7a8a; border: 1px solid #ccd4db; }    /* 髒亂 */
-        .res-safe { background: #ecefe7; color: #7a8a6a; border: 1px solid #d8decb; }     /* 良好 */
+        .result { margin-top: 15px; padding: 18px; border-radius: 10px; display: none; line-height: 1.8; font-size: 1rem; }
+        .res-positive { background: #e9e0df; color: #8e6d6a; border: 1px solid #d6c5c2; }
+        .res-dirty { background: #e1e6ea; color: #6a7a8a; border: 1px solid #ccd4db; }
+        .res-safe { background: #ecefe7; color: #7a8a6a; border: 1px solid #d8decb; }
 
         .memo-box { 
             border: none; 
@@ -117,12 +146,19 @@
             border-radius: 12px; 
             margin-top: 10px; 
         }
-        .memo-item { margin-bottom: 10px; display: flex; align-items: flex-start; font-size: 0.95rem; }
+        .memo-item { margin-bottom: 10px; display: flex; align-items: flex-start; font-size: 1rem; }
         .memo-item b { color: #5c4a48; }
         .memo-item span { margin-right: 8px; }
     </style>
 </head>
 <body>
+
+    <div class="font-controls">
+        <span class="font-label">字體大小：</span>
+        <button class="font-btn" onclick="changeFontSize(-2)">A-</button>
+        <button class="font-btn" onclick="changeFontSize(0)">標準</button>
+        <button class="font-btn" onclick="changeFontSize(2)">A+</button>
+    </div>
 
     <div class="card">
         <h2>📅 個人行程快速查</h2>
@@ -151,6 +187,17 @@
     </div>
 
     <script>
+        // 字體大小控制邏輯
+        let currentFontSize = 16;
+        function changeFontSize(delta) {
+            if (delta === 0) {
+                currentFontSize = 16;
+            } else {
+                currentFontSize = Math.min(Math.max(currentFontSize + delta, 12), 24); // 限制範圍 12px~24px
+            }
+            document.documentElement.style.setProperty('--base-font-size', currentFontSize + 'px');
+        }
+
         const staffData = {
             "林湘玲": ["4/13(一) 08:30 朝陽里", "7/10(五) 10:30 蓬萊國小", "9/07(一) 08:30 星明里"],
             "趙佩儀": ["4/13(一) 10:30 雙連里", "7/10(五) 08:30 靜修女中", "9/04(五) 10:30 雙連里"],
@@ -166,7 +213,6 @@
             "吳恩綺": ["4/07(二) 08:30 景星里", "7/09(四) 10:30 成淵高中", "9/04(五) 08:30 民權里"]
         };
 
-        // 初始化名單
         const select = document.getElementById('staffSelect');
         Object.keys(staffData).sort().forEach(name => {
             const opt = document.createElement('option');
@@ -191,7 +237,7 @@
             const dirty = document.getElementById('isDirty').checked;
             const res = document.getElementById('judgeResult');
             res.style.display = "block";
-            res.className = "result"; // 重置
+            res.className = "result";
 
             if (larva) {
                 res.classList.add("res-positive");
