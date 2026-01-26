@@ -1,1 +1,257 @@
 # testtt
+V1
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>115年密調在雲端</title>
+    <style>
+        /* 莫蘭迪色系定義 */
+        :root {
+            --bg-color: #f2efeb;
+            --card-bg: #ffffff;
+            --primary-blue: #8294a5;
+            --primary-green: #96a48b;
+            --text-main: #595757;
+            --accent-red: #bda6a2;
+            --border-color: #d1d1d1;
+            /* 基礎字體大小變數 */
+            --base-font-size: 16px;
+        }
+
+        html {
+            font-size: var(--base-font-size);
+        }
+
+        body { 
+            font-family: -apple-system, "Noto Sans TC", "Microsoft JhengHei", sans-serif; 
+            line-height: 1.6; 
+            padding: 15px; 
+            background: var(--bg-color); 
+            color: var(--text-main); 
+            -webkit-text-size-adjust: 100%; 
+        }
+
+        /* 字體調整控制列 */
+        .font-controls {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding: 0 5px;
+        }
+        .font-btn {
+            background: #e3e0d9;
+            border: 1px solid var(--border-color);
+            padding: 5px 12px;
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        .font-label {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .card { 
+            background: var(--card-bg); 
+            padding: 20px; 
+            border-radius: 15px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
+            margin-bottom: 20px; 
+        }
+
+        h2 { 
+            color: var(--primary-blue); 
+            border-left: 6px solid var(--primary-blue); 
+            padding-left: 12px; 
+            font-size: 1.2rem; 
+            margin-top: 0; 
+            letter-spacing: 1px;
+        }
+
+        select { 
+            width: 100%; 
+            padding: 12px; 
+            border-radius: 10px; 
+            border: 1px solid var(--border-color); 
+            font-size: 1rem; 
+            margin: 10px 0; 
+            background-color: #faf9f8; 
+            color: var(--text-main);
+            appearance: none; 
+            -webkit-appearance: none; 
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%238294a5%22%20d%3D%22M7%2010l5%205%205-5z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+        }
+
+        .schedule-box { margin-top: 10px; }
+        .schedule-item { 
+            background: #f8f7f5; 
+            padding: 14px; 
+            border-radius: 10px; 
+            margin: 10px 0; 
+            border: 1px solid #e3e0d9; 
+            font-size: 1rem;
+        }
+        .schedule-item b { 
+            color: var(--primary-green); 
+            display: block; 
+            margin-bottom: 4px; 
+            font-size: 0.9rem;
+        }
+
+        .check-item { 
+            display: flex; 
+            align-items: center; 
+            margin: 15px 0; 
+            font-size: 1.1rem; 
+            color: #6b6964;
+            cursor: pointer;
+        }
+        input[type="checkbox"] { 
+            width: 24px; 
+            height: 24px; 
+            margin-right: 12px; 
+            accent-color: var(--primary-blue);
+        }
+
+        .btn { 
+            background: var(--primary-blue); 
+            color: white; 
+            border: none; 
+            padding: 15px; 
+            width: 100%; 
+            border-radius: 10px; 
+            font-size: 1.1rem; 
+            font-weight: bold; 
+            margin-top: 10px; 
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+        .btn:active { background: #6a7a8a; }
+        
+        .result { margin-top: 15px; padding: 18px; border-radius: 10px; display: none; line-height: 1.8; font-size: 1rem; }
+        .res-positive { background: #e9e0df; color: #8e6d6a; border: 1px solid #d6c5c2; }
+        .res-dirty { background: #e1e6ea; color: #6a7a8a; border: 1px solid #ccd4db; }
+        .res-safe { background: #ecefe7; color: #7a8a6a; border: 1px solid #d8decb; }
+
+        .memo-box { 
+            border: none; 
+            background: #e9e0df; 
+            color: #7a625f; 
+            padding: 15px; 
+            border-radius: 12px; 
+            margin-top: 10px; 
+        }
+        .memo-item { margin-bottom: 10px; display: flex; align-items: flex-start; font-size: 1rem; }
+        .memo-item b { color: #5c4a48; }
+        .memo-item span { margin-right: 8px; }
+    </style>
+</head>
+<body>
+
+    <div class="font-controls">
+        <span class="font-label">字體大小：</span>
+        <button class="font-btn" onclick="changeFontSize(-2)">A-</button>
+        <button class="font-btn" onclick="changeFontSize(0)">標準</button>
+        <button class="font-btn" onclick="changeFontSize(2)">A+</button>
+    </div>
+
+    <div class="card">
+        <h2>📅 個人行程快速查</h2>
+        <select id="staffSelect" onchange="showSchedule()">
+            <option value="">-- 請點選您的姓名 --</option>
+        </select>
+        <div id="scheduleResult" class="schedule-box"></div>
+    </div>
+
+    <div class="card">
+        <h2>⚖️ 現場裁罰快速判斷</h2>
+        <label class="check-item"><input type="checkbox" id="hasLarva"> 有發現孑孓 (陽性孳生源)</label>
+        <label class="check-item"><input type="checkbox" id="isDirty"> 有環境髒亂</label>
+        <button class="btn" onclick="judge()">點我判斷樣態</button>
+        <div id="judgeResult" class="result"></div>
+    </div>
+
+    <div class="card">
+        <h2>⚠️ 核心作業規範備忘</h2>
+        <div class="memo-box">
+            <div class="memo-item">📌 <b>嚴禁代蓋章：</b>必須由實際執行人親自簽章。</div>
+            <div class="memo-item">📌 <b>複查提醒：</b>開立改善通知單後，須排定一週後複查。</div>
+            <div class="memo-item">📌 <b>請假規定：</b>最遲於 3 天前通知承辦人與護理長。</div>
+            <div class="memo-item">📌 <b>取消通知：</b>當天早上 8 點前留意電話/簡訊/LINE。</div>
+        </div>
+    </div>
+
+    <script>
+        // 字體大小控制邏輯
+        let currentFontSize = 16;
+        function changeFontSize(delta) {
+            if (delta === 0) {
+                currentFontSize = 16;
+            } else {
+                currentFontSize = Math.min(Math.max(currentFontSize + delta, 12), 24); // 限制範圍 12px~24px
+            }
+            document.documentElement.style.setProperty('--base-font-size', currentFontSize + 'px');
+        }
+
+        const staffData = {
+            "林湘玲": ["4/13(一) 08:30 朝陽里", "7/10(五) 10:30 蓬萊國小", "9/07(一) 08:30 星明里"],
+            "趙佩儀": ["4/13(一) 10:30 雙連里", "7/10(五) 08:30 靜修女中", "9/04(五) 10:30 雙連里"],
+            "羅毓婉": ["4/09(四) 10:30 國慶里", "7/02(四) 10:30 大龍國小", "9/01(二) 10:30 保安里"],
+            "陳家瑋": ["4/09(四) 08:30 國順里", "7/02(四) 08:30 啟聰學校", "9/03(四) 08:30 老師里"],
+            "王虹雅": ["4/10(五) 10:30 玉泉里", "7/03(五) 08:30 蘭州國中", "9/07(一) 10:30 光能里"],
+            "林靖雯": ["4/10(五) 08:30 永樂里", "7/14(二) 08:30 建成國中", "9/03(四) 10:30 鄰江里"],
+            "蔡雅安": ["4/01(三) 08:30 斯文里", "7/01(三) 08:30 明倫高中", "9/01(二) 08:30 重慶里"],
+            "葉智婷": ["4/08(三) 10:30 延平里", "7/06(一) 10:30 民權國中", "9/09(三) 10:30 大有里"],
+            "楊晴喬": ["4/08(三) 08:30 南芳里", "7/08(三) 10:30 太平國小", "9/02(三) 10:30 揚雅里"],
+            "游蕙慈": ["4/07(二) 10:30 隆和里", "7/07(二) 08:30 大橋國小", "9/08(二) 08:30 建功里"],
+            "張雁茹": ["4/01(三) 10:30 蓬萊里", "7/06(一) 08:30 大同國小", "9/08(二) 10:30 建明里"],
+            "吳恩綺": ["4/07(二) 08:30 景星里", "7/09(四) 10:30 成淵高中", "9/04(五) 08:30 民權里"]
+        };
+
+        const select = document.getElementById('staffSelect');
+        Object.keys(staffData).sort().forEach(name => {
+            const opt = document.createElement('option');
+            opt.value = name; opt.text = name;
+            select.add(opt);
+        });
+
+        function showSchedule() {
+            const name = select.value;
+            const res = document.getElementById('scheduleResult');
+            if (!name) { res.innerHTML = ""; return; }
+            const s = staffData[name];
+            res.innerHTML = `
+                <div class="schedule-item"><b>📍 4月 社區密調</b>${s[0]}</div>
+                <div class="schedule-item"><b>🏫 7月 校園密調</b>${s[1]}</div>
+                <div class="schedule-item"><b>📍 9月 社區密調</b>${s[2]}</div>
+            `;
+        }
+
+        function judge() {
+            const larva = document.getElementById('hasLarva').checked;
+            const dirty = document.getElementById('isDirty').checked;
+            const res = document.getElementById('judgeResult');
+            res.style.display = "block";
+            res.className = "result";
+
+            if (larva) {
+                res.classList.add("res-positive");
+                res.innerHTML = "📢 <b>主責：衛生局</b><br>⚖️ 適用法條：傳染病防治法<br>📝 處置：開立改善通知單，限期一週複查。";
+            } else if (dirty) {
+                res.classList.add("res-dirty");
+                res.innerHTML = "📢 <b>主責：環保局</b><br>⚖️ 適用法條：廢棄物清理法<br>📝 處置：視情況開立勸導單或裁罰。";
+            } else {
+                res.classList.add("res-safe");
+                res.innerHTML = "✅ 目前狀況良好，請持續衛教宣導。";
+            }
+        }
+    </script>
+</body>
+</html>
