@@ -2,254 +2,246 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>115年密調在雲端</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>114年業務成果報告 - 疾病管制科</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* 莫蘭迪色系定義 */
-        :root {
-            --bg-color: #f2efeb;
-            --card-bg: #ffffff;
-            --primary-blue: #8294a5;
-            --primary-green: #96a48b;
-            --text-main: #595757;
-            --accent-red: #bda6a2;
-            --border-color: #d1d1d1;
-            /* 基礎字體大小變數 */
-            --base-font-size: 16px;
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #E5E1DA; }
+        .slide-enter { animation: slideUp 0.4s ease-out forwards; }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
-        html {
-            font-size: var(--base-font-size);
-        }
-
-        body { 
-            font-family: -apple-system, "Noto Sans TC", "Microsoft JhengHei", sans-serif; 
-            line-height: 1.6; 
-            padding: 15px; 
-            background: var(--bg-color); 
-            color: var(--text-main); 
-            -webkit-text-size-adjust: 100%; 
-        }
-
-        /* 字體調整控制列 */
-        .font-controls {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-            padding: 0 5px;
-        }
-        .font-btn {
-            background: #e3e0d9;
-            border: 1px solid var(--border-color);
-            padding: 5px 12px;
-            border-radius: 8px;
-            color: var(--text-main);
-            font-size: 0.9rem;
-            cursor: pointer;
-        }
-        .font-label {
-            font-size: 0.9rem;
-            color: #888;
-        }
-
-        .card { 
-            background: var(--card-bg); 
-            padding: 20px; 
-            border-radius: 15px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
-            margin-bottom: 20px; 
-        }
-
-        h2 { 
-            color: var(--primary-blue); 
-            border-left: 6px solid var(--primary-blue); 
-            padding-left: 12px; 
-            font-size: 1.2rem; 
-            margin-top: 0; 
-            letter-spacing: 1px;
-        }
-
-        select { 
-            width: 100%; 
-            padding: 12px; 
-            border-radius: 10px; 
-            border: 1px solid var(--border-color); 
-            font-size: 1rem; 
-            margin: 10px 0; 
-            background-color: #faf9f8; 
-            color: var(--text-main);
-            appearance: none; 
-            -webkit-appearance: none; 
-            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%238294a5%22%20d%3D%22M7%2010l5%205%205-5z%22%2F%3E%3C%2Fsvg%3E");
-            background-repeat: no-repeat;
-            background-position: right 10px center;
-        }
-
-        .schedule-box { margin-top: 10px; }
-        .schedule-item { 
-            background: #f8f7f5; 
-            padding: 14px; 
-            border-radius: 10px; 
-            margin: 10px 0; 
-            border: 1px solid #e3e0d9; 
-            font-size: 1rem;
-        }
-        .schedule-item b { 
-            color: var(--primary-green); 
-            display: block; 
-            margin-bottom: 4px; 
-            font-size: 0.9rem;
-        }
-
-        .check-item { 
-            display: flex; 
-            align-items: center; 
-            margin: 15px 0; 
-            font-size: 1.1rem; 
-            color: #6b6964;
-            cursor: pointer;
-        }
-        input[type="checkbox"] { 
-            width: 24px; 
-            height: 24px; 
-            margin-right: 12px; 
-            accent-color: var(--primary-blue);
-        }
-
-        .btn { 
-            background: var(--primary-blue); 
-            color: white; 
-            border: none; 
-            padding: 15px; 
-            width: 100%; 
-            border-radius: 10px; 
-            font-size: 1.1rem; 
-            font-weight: bold; 
-            margin-top: 10px; 
-            transition: background 0.3s;
-            cursor: pointer;
-        }
-        .btn:active { background: #6a7a8a; }
-        
-        .result { margin-top: 15px; padding: 18px; border-radius: 10px; display: none; line-height: 1.8; font-size: 1rem; }
-        .res-positive { background: #e9e0df; color: #8e6d6a; border: 1px solid #d6c5c2; }
-        .res-dirty { background: #e1e6ea; color: #6a7a8a; border: 1px solid #ccd4db; }
-        .res-safe { background: #ecefe7; color: #7a8a6a; border: 1px solid #d8decb; }
-
-        .memo-box { 
-            border: none; 
-            background: #e9e0df; 
-            color: #7a625f; 
-            padding: 15px; 
-            border-radius: 12px; 
-            margin-top: 10px; 
-        }
-        .memo-item { margin-bottom: 10px; display: flex; align-items: flex-start; font-size: 1rem; }
-        .memo-item b { color: #5c4a48; }
-        .memo-item span { margin-right: 8px; }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
 <body>
+    <div id="root"></div>
 
-    <div class="font-controls">
-        <span class="font-label">字體大小：</span>
-        <button class="font-btn" onclick="changeFontSize(-2)">A-</button>
-        <button class="font-btn" onclick="changeFontSize(0)">標準</button>
-        <button class="font-btn" onclick="changeFontSize(2)">A+</button>
-    </div>
+    <script type="text/babel">
+        const { useState, useEffect, useMemo, useCallback } = React;
 
-    <div class="card">
-        <h2>📅 個人行程快速查</h2>
-        <select id="staffSelect" onchange="showSchedule()">
-            <option value="">-- 請點選您的姓名 --</option>
-        </select>
-        <div id="scheduleResult" class="schedule-box"></div>
-    </div>
+        // --- 優化點 1: 抽離靜態資料 ---
+        const DEFAULT_SLIDES = [
+            { id: 0, title: "114年業務成果暨115年業務規劃", type: "cover", subtitle: "疾病管制科健康服務中心" },
+            { id: 1, title: "快速導覽目錄", type: "toc", items: ["成果總覽", "指標與挑戰 (一)", "指標與挑戰 (二)", "社區防疫宣導實錄", "非指標業務總結", "115年規劃重點", "結語"] },
+            { id: 2, title: "114年業務成果總覽", type: "stats", tagline: "全數指標達標，執行效能穩健", data: [{ label: "指標總分", value: "30", unit: "分" }, { label: "實際得分", value: "30", unit: "分" }] },
+            { 
+                id: 3, title: "指標明細與挑戰 (一)", type: "cards", tagline: "幼兒抽血與通報疫調",
+                items: [
+                    { n: "HBsAg(+) 幼兒抽血", score: "8分", c: "系統資料不一致 (SIMS與名單不符)", s: "加強橫助聯繫，依續約名單查核" },
+                    { n: "HBeAg(+) 幼兒抽血", score: "4分", c: "家長抽血意願低，個案追蹤不易", s: "提供多元抽血點資訊並強化衛教" },
+                    { n: "傳染病通報疫調", score: "5分", c: "個案疫調配合度不足", s: "法規提醒說明並建立個案信任感" }
+                ]
+            },
+            { 
+                id: 4, title: "指標明細與挑戰 (二)", type: "cards", tagline: "藥物管理與疫苗推動",
+                items: [
+                    { n: "公費抗病毒藥物", score: "5分", c: "診所申報與實體庫存核對耗時", s: "建置數位查核清單" },
+                    { n: "流感/新冠疫苗接種", score: "4分", c: "民眾接種疲乏", s: "深入里鄰設站" }
+                ]
+            },
+            { 
+                id: 5, title: "社區防疫宣導實錄", type: "photo-carousel", tagline: "非指標性業務：深入社區與校園",
+                photos: [
+                    { t: "校園 M 痘宣導", d: "辦理實體衛教講座。", u: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=800" },
+                    { t: "防疫工作隊培訓", d: "結合實務演練。", u: "https://images.unsplash.com/photo-1576091160550-2173dad99901?w=800" }
+                ]
+            },
+            { id: 6, title: "非指標業務總結", type: "steps", items: [{ t: "防疫志工隊", d: "完成 4 場培訓。" }, { t: "監測系統", d: "及時通報率 100%。" }] },
+            { id: 7, title: "115年業務規劃重點", type: "steps", items: [{ t: "HBsAg 門檻提高", d: "提高至 85%" }, { t: "風險導向追蹤", d: "麻疹改為扣分制" }] },
+            { id: 8, title: "結語", type: "closing", final: "持續朝向「韌性防疫、以人為本」邁進" }
+        ];
 
-    <div class="card">
-        <h2>⚖️ 現場裁罰快速判斷</h2>
-        <label class="check-item"><input type="checkbox" id="hasLarva"> 有發現孑孓 (陽性孳生源)</label>
-        <label class="check-item"><input type="checkbox" id="isDirty"> 有環境髒亂</label>
-        <button class="btn" onclick="judge()">點我判斷樣態</button>
-        <div id="judgeResult" class="result"></div>
-    </div>
-
-    <div class="card">
-        <h2>⚠️ 核心作業規範備忘</h2>
-        <div class="memo-box">
-            <div class="memo-item">📌 <b>嚴禁代蓋章：</b>必須由實際執行人親自簽章。</div>
-            <div class="memo-item">📌 <b>複查提醒：</b>開立改善通知單後，須排定一週後複查。</div>
-            <div class="memo-item">📌 <b>請假規定：</b>最遲於 3 天前通知承辦人與護理長。</div>
-            <div class="memo-item">📌 <b>取消通知：</b>當天早上 8 點前留意電話/簡訊/LINE。</div>
-        </div>
-    </div>
-
-    <script>
-        // 字體大小控制邏輯
-        let currentFontSize = 16;
-        function changeFontSize(delta) {
-            if (delta === 0) {
-                currentFontSize = 16;
-            } else {
-                currentFontSize = Math.min(Math.max(currentFontSize + delta, 12), 24); // 限制範圍 12px~24px
-            }
-            document.documentElement.style.setProperty('--base-font-size', currentFontSize + 'px');
-        }
-
-        const staffData = {
-            "林湘玲": ["4/13(一) 08:30 朝陽里", "7/10(五) 10:30 蓬萊國小", "9/07(一) 08:30 星明里"],
-            "趙佩儀": ["4/13(一) 10:30 雙連里", "7/10(五) 08:30 靜修女中", "9/04(五) 10:30 雙連里"],
-            "羅毓婉": ["4/09(四) 10:30 國慶里", "7/02(四) 10:30 大龍國小", "9/01(二) 10:30 保安里"],
-            "陳家瑋": ["4/09(四) 08:30 國順里", "7/02(四) 08:30 啟聰學校", "9/03(四) 08:30 老師里"],
-            "王虹雅": ["4/10(五) 10:30 玉泉里", "7/03(五) 08:30 蘭州國中", "9/07(一) 10:30 光能里"],
-            "林靖雯": ["4/10(五) 08:30 永樂里", "7/14(二) 08:30 建成國中", "9/03(四) 10:30 鄰江里"],
-            "蔡雅安": ["4/01(三) 08:30 斯文里", "7/01(三) 08:30 明倫高中", "9/01(二) 08:30 重慶里"],
-            "葉智婷": ["4/08(三) 10:30 延平里", "7/06(一) 10:30 民權國中", "9/09(三) 10:30 大有里"],
-            "楊晴喬": ["4/08(三) 08:30 南芳里", "7/08(三) 10:30 太平國小", "9/02(三) 10:30 揚雅里"],
-            "游蕙慈": ["4/07(二) 10:30 隆和里", "7/07(二) 08:30 大橋國小", "9/08(二) 08:30 建功里"],
-            "張雁茹": ["4/01(三) 10:30 蓬萊里", "7/06(一) 08:30 大同國小", "9/08(二) 10:30 建明里"],
-            "吳恩綺": ["4/07(二) 08:30 景星里", "7/09(四) 10:30 成淵高中", "9/04(五) 08:30 民權里"]
+        // --- 優化點 2: 統一的圖標組件，減少 DOM 掃描 ---
+        const Icon = ({ name, size = 24, className = "" }) => {
+            return <i data-lucide={name} className={className} style={{ width: size, height: size, display: 'inline-block' }}></i>;
         };
 
-        const select = document.getElementById('staffSelect');
-        Object.keys(staffData).sort().forEach(name => {
-            const opt = document.createElement('option');
-            opt.value = name; opt.text = name;
-            select.add(opt);
-        });
+        const App = () => {
+            const [slides, setSlides] = useState(DEFAULT_SLIDES);
+            const [current, setCurrent] = useState(0);
+            const [fontSize, setFontSize] = useState(20);
+            const [showNav, setShowNav] = useState(false);
+            const [showSettings, setShowSettings] = useState(false);
+            const [isEditing, setIsEditing] = useState(false);
+            const [editJson, setEditJson] = useState("");
+            const [carouselIndex, setCarouselIndex] = useState(0);
 
-        function showSchedule() {
-            const name = select.value;
-            const res = document.getElementById('scheduleResult');
-            if (!name) { res.innerHTML = ""; return; }
-            const s = staffData[name];
-            res.innerHTML = `
-                <div class="schedule-item"><b>📍 4月 社區密調</b>${s[0]}</div>
-                <div class="schedule-item"><b>🏫 7月 校園密調</b>${s[1]}</div>
-                <div class="schedule-item"><b>📍 9月 社區密調</b>${s[2]}</div>
-            `;
-        }
+            // 每當分頁或重要 UI 切換，統一刷新圖標
+            useEffect(() => {
+                if (window.lucide) window.lucide.createIcons();
+            }, [current, showNav, showSettings, isEditing]);
 
-        function judge() {
-            const larva = document.getElementById('hasLarva').checked;
-            const dirty = document.getElementById('isDirty').checked;
-            const res = document.getElementById('judgeResult');
-            res.style.display = "block";
-            res.className = "result";
+            const slide = useMemo(() => slides[current] || slides[0], [slides, current]);
 
-            if (larva) {
-                res.classList.add("res-positive");
-                res.innerHTML = "📢 <b>主責：衛生局</b><br>⚖️ 適用法條：傳染病防治法<br>📝 處置：開立改善通知單，限期一週複查。";
-            } else if (dirty) {
-                res.classList.add("res-dirty");
-                res.innerHTML = "📢 <b>主責：環保局</b><br>⚖️ 適用法條：廢棄物清理法<br>📝 處置：視情況開立勸導單或裁罰。";
-            } else {
-                res.classList.add("res-safe");
-                res.innerHTML = "✅ 目前狀況良好，請持續衛教宣導。";
-            }
-        }
+            // 自動播放邏輯
+            useEffect(() => {
+                let timer;
+                if (slide.type === 'photo-carousel' && slide.photos) {
+                    timer = setInterval(() => {
+                        setCarouselIndex(prev => (prev + 1) % slide.photos.length);
+                    }, 5000);
+                }
+                return () => clearInterval(timer);
+            }, [slide]);
+
+            const handleSaveJson = () => {
+                try {
+                    const parsed = JSON.parse(editJson);
+                    setSlides(parsed);
+                    setIsEditing(false);
+                    setCurrent(0);
+                } catch (e) {
+                    alert("JSON 格式錯誤，請檢查符號是否成對。");
+                }
+            };
+
+            const colors = { bg: "#E5E1DA", primary: "#626F47", secondary: "#5D7285", text: "#2D2D2D" };
+
+            return (
+                <div className="flex flex-col h-screen overflow-hidden select-none" style={{ backgroundColor: colors.bg, color: colors.text, fontSize: `${fontSize}px` }}>
+                    {/* Progress Bar */}
+                    <div className="flex w-full h-1 bg-gray-300">
+                        {slides.map((_, i) => (
+                            <div key={i} className="flex-1 transition-all duration-300" style={{ backgroundColor: i <= current ? colors.secondary : 'transparent' }} />
+                        ))}
+                    </div>
+
+                    {/* Toolbar */}
+                    <div className="absolute top-4 right-4 flex gap-2 z-50">
+                        <button onClick={() => { setEditJson(JSON.stringify(slides, null, 2)); setIsEditing(true); }} className="bg-white/90 p-2 rounded-lg shadow border border-white active:scale-95 transition-transform"><Icon name="edit-3" size={18}/></button>
+                        <button onClick={() => setShowNav(true)} className="bg-white/90 p-2 rounded-lg shadow border border-white active:scale-95 transition-transform"><Icon name="menu" size={18}/></button>
+                        <button onClick={() => setShowSettings(true)} className="bg-white/90 p-2 rounded-lg shadow border border-white active:scale-95 transition-transform"><Icon name="settings" size={18}/></button>
+                    </div>
+
+                    {/* Content */}
+                    <main className="flex-1 overflow-y-auto p-8 pb-32 max-w-4xl mx-auto w-full">
+                        <header key={`h-${current}`} className="mb-8 slide-enter">
+                            <span className="bg-slate-800 text-white text-[0.55em] font-black px-3 py-1 rounded-full mb-3 inline-block uppercase tracking-widest">Slide {current + 1}</span>
+                            <h1 className="text-[1.8em] font-black leading-tight tracking-tight">{slide.title}</h1>
+                            {slide.tagline && <p className="text-[0.8em] font-bold mt-2 text-slate-400 border-l-4 border-slate-200 pl-3">{slide.tagline}</p>}
+                        </header>
+
+                        <section key={`s-${current}`} className="slide-enter">
+                            {slide.type === 'photo-carousel' && (
+                                <div className="bg-white rounded-[2rem] overflow-hidden shadow-xl border-2 border-white">
+                                    <div className="aspect-video relative bg-slate-100">
+                                        {slide.photos.map((ph, i) => (
+                                            <img key={i} src={ph.u} className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${i === carouselIndex ? 'opacity-100' : 'opacity-0'}`} />
+                                        ))}
+                                    </div>
+                                    <div className="p-6">
+                                        <h4 className="text-[1.1em] font-black text-slate-700">{slide.photos[carouselIndex]?.t}</h4>
+                                        <p className="text-[0.85em] font-medium text-slate-500">{slide.photos[carouselIndex]?.d}</p>
+                                    </div>
+                                </div>
+                            )}
+
+                            {slide.type === 'cards' && (
+                                <div className="space-y-4">
+                                    {slide.items.map((item, i) => (
+                                        <div key={i} className="bg-white rounded-3xl shadow-md border border-white p-6">
+                                            <div className="flex justify-between items-center mb-4">
+                                                <b className="font-black text-[0.9em]">{item.n}</b>
+                                                <span className="text-xs font-black bg-slate-100 px-2 py-1 rounded-lg">{item.score}</span>
+                                            </div>
+                                            <div className="grid gap-3 text-[0.85em]">
+                                                <div className="flex gap-3 text-amber-600"><Icon name="alert-circle" size={16} className="mt-1 shrink-0"/>{item.c}</div>
+                                                <div className="flex gap-3 text-green-700"><Icon name="check-circle" size={16} className="mt-1 shrink-0"/>{item.s}</div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            {slide.type === 'stats' && (
+                                <div className="grid gap-4">
+                                    {slide.data.map((d, i) => (
+                                        <div key={i} className="p-10 bg-white rounded-[2.5rem] shadow-md text-center border-2 border-white">
+                                            <p className="text-[0.7em] font-black text-slate-300 uppercase mb-2">{d.label}</p>
+                                            <p className="text-[3.5em] font-black text-slate-800 leading-none">{d.value}<span className="text-lg ml-1 opacity-30">{d.unit}</span></p>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            {slide.type === 'cover' && <div className="py-10 text-center space-y-4"><div className="text-6xl mb-4">📊</div><h2 className="text-[1.3em] font-black text-slate-400">{slide.subtitle}</h2></div>}
+                            {slide.type === 'closing' && <div className="py-20 text-center"><h2 className="text-[2em] font-black text-slate-800">{slide.final}</h2></div>}
+                            
+                            {(slide.type === 'toc' || slide.type === 'steps') && (
+                                <div className="grid gap-3">
+                                    {slide.items.map((it, i) => (
+                                        <div key={i} className="bg-white p-5 rounded-3xl shadow-sm flex items-center gap-4 border border-white">
+                                            <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center font-black text-slate-400 text-xs">{i+1}</div>
+                                            <div className="font-black text-[0.9em]">{it.t || it}</div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </section>
+                    </main>
+
+                    {/* Footer Controls */}
+                    <footer className="fixed bottom-0 left-0 right-0 bg-white/70 backdrop-blur-md border-t py-4 flex justify-between items-center px-10 z-40">
+                        <button onClick={() => setCurrent(c => Math.max(0, c-1))} disabled={current === 0} className="p-3 bg-slate-800 text-white rounded-xl shadow-lg active:scale-90 disabled:opacity-10"><Icon name="chevron-left" size={24}/></button>
+                        <div className="flex flex-col items-center">
+                            <span className="text-[0.7em] font-black text-slate-400 mb-2 tracking-widest">{current + 1} / {slides.length}</span>
+                            <div className="flex gap-1.5">
+                                {slides.map((_, i) => <div key={i} className="h-1.5 rounded-full transition-all" style={{width: i === current ? '20px' : '6px', backgroundColor: i === current ? colors.secondary : '#CBD5E1'}} />)}
+                            </div>
+                        </div>
+                        <button onClick={() => setCurrent(c => Math.min(slides.length - 1, c + 1))} disabled={current === slides.length - 1} className="p-3 bg-slate-800 text-white rounded-xl shadow-lg active:scale-90 disabled:opacity-10"><Icon name="chevron-right" size={24}/></button>
+                    </footer>
+
+                    {/* Modals (Nav, Settings, Editor) */}
+                    {showNav && (
+                        <div className="absolute inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center" onClick={() => setShowNav(false)}>
+                            <div className="bg-white rounded-[2rem] w-full max-w-sm p-6 shadow-2xl m-4" onClick={e => e.stopPropagation()}>
+                                <h2 className="text-xl font-black mb-4">快速跳轉</h2>
+                                <div className="space-y-2 max-h-[60vh] overflow-y-auto pr-2">
+                                    {slides.map((s, i) => (
+                                        <button key={i} onClick={() => { setCurrent(i); setShowNav(false); }} className={`w-full p-3 rounded-xl text-left font-bold text-sm ${current === i ? 'bg-slate-800 text-white' : 'bg-slate-50'}`}>{i+1}. {s.title}</button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {showSettings && (
+                        <div className="absolute inset-0 bg-black/20 z-[100]" onClick={() => setShowSettings(false)}>
+                            <div className="absolute top-20 right-4 bg-white p-6 rounded-2xl shadow-2xl w-64" onClick={e => e.stopPropagation()}>
+                                <h3 className="font-black mb-4">字體大小</h3>
+                                <input type="range" min="16" max="30" value={fontSize} onChange={e => setFontSize(parseInt(e.target.value))} className="w-full accent-slate-800" />
+                                <p className="text-center mt-2 font-bold">{fontSize}px</p>
+                            </div>
+                        </div>
+                    )}
+
+                    {isEditing && (
+                        <div className="absolute inset-0 bg-white z-[200] flex flex-col p-6 slide-enter">
+                            <div className="flex justify-between items-center mb-4">
+                                <h3 className="font-black text-lg">內容原始碼編輯 (JSON)</h3>
+                                <div className="flex gap-2">
+                                    <button onClick={handleSaveJson} className="bg-green-600 text-white px-4 py-2 rounded-lg font-bold">應用更改</button>
+                                    <button onClick={() => setIsEditing(false)} className="bg-slate-200 px-4 py-2 rounded-lg font-bold">取消</button>
+                                </div>
+                            </div>
+                            <textarea className="flex-1 w-full p-4 font-mono text-xs bg-slate-900 text-green-400 rounded-xl" value={editJson} onChange={e => setEditJson(e.target.value)} spellCheck="false" />
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
     </script>
 </body>
 </html>
