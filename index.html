@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Notification & Epidemic Investigation</title>
+    <style>
+        :root { --primary-color: #0056b3; --warning-color: #d9534f; }
+        body { font-family: -apple-system, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 20px auto; padding: 20px; background: #f4f7f6; }
+        .form-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1, h2 { color: var(--primary-color); border-bottom: 2px solid var(--primary-color); padding-bottom: 10px; }
+        .notice { background: #fff3cd; border-left: 5px solid #ffecb5; padding: 15px; margin-bottom: 20px; font-size: 0.9em; }
+        .legal-warning { color: var(--warning-color); font-weight: bold; font-size: 0.85em; }
+        .section { margin-bottom: 25px; }
+        label { display: block; margin-top: 10px; font-weight: bold; }
+        input[type="text"], input[type="tel"], input[type="date"], textarea { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .checkbox-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9em; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        button { background: var(--primary-color); color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 20px; }
+        button:hover { opacity: 0.9; }
+        .footer { margin-top: 30px; font-size: 0.8em; color: #666; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h1>Health Notification / 旅客通知信</h1>
+    <p>Revised: 2024/08/12 [cite: 4]</p>
+    
+    <div class="notice">
+        <p><strong>English:</strong> Hello, I am a pandemic prevention staff member from the Taipei City Government Department of Health. [cite: 5] You may have been infected with Dengue/Chikungunya/Zika virus. [cite: 6] For public safety, please fill out this form. [cite: 7] Your identity will remain confidential. </p>
+        <hr>
+        <p><strong>中文：</strong> 我是臺北市政府衛生局防疫人員，您疑似/被診斷為蚊媒傳染病，請協助填寫疫調單以利防治，我們不會透露您的身份。 [cite: 11]</p>
+        <p class="legal-warning">According to Article 43 & 67 of the Communicable Disease Control Act, violators shall be fined NT$60,000 to NT$300,000.  / 依傳染病防治法第43條，規避調查最高可處30萬元罰鍰。 [cite: 14, 17]</p>
+    </div>
+
+    <form id="investigationForm">
+        <div class="section">
+            <h2>1. Contact Information / 聯絡方式 [cite: 32]</h2>
+            <label>Name / 姓名</label><input type="text" name="name" required [cite: 34]>
+            <label>Cellphone / 手機</label><input type="tel" name="phone" required [cite: 35]>
+            <label>Hotel Name & Address / 旅店名稱與地址</label><input type="text" name="hotel" [cite: 39]>
+            <label>Occupation / 職業</label><input type="text" name="job" [cite: 40]>
+        </div>
+
+        <div class="section">
+            <h2>2. Symptoms / 症狀 [cite: 42, 43]</h2>
+            <p>Please check the symptoms and specify the dates: [cite: 44]</p>
+            <div class="checkbox-group">
+                <span><input type="checkbox" name="symptom" value="Fever"> Fever (發燒)</span>
+                <span><input type="checkbox" name="symptom" value="Headache"> Headache (頭痛)</span>
+                <span><input type="checkbox" name="symptom" value="MuscleAche"> Muscle/Joint Pain (肌肉/關節痛)</span>
+                <span><input type="checkbox" name="symptom" value="Rash"> Skin Rash (紅疹)</span>
+            </div>
+            <label>Symptom Duration (from...to...) / 症狀日期</label>
+            <input type="text" name="symptom_date" placeholder="MM/DD - MM/DD">
+        </div>
+
+        <div class="section">
+            <h2>3. Schedule in Taiwan / 在台行程 [cite: 48, 51]</h2>
+            <p>List places where you stayed for >2 hours (e.g., Taipei Zoo, Hotel). [cite: 49, 52]</p>
+            <textarea name="itinerary" rows="4"></textarea>
+            <p style="font-size: 0.8em;">*Please mark (*) if mosquito repellent was NOT used. [cite: 54, 55]</p>
+        </div>
+
+        <div class="section">
+            <h2>4. Others / 其他 [cite: 56, 60]</h2>
+            <label>Number of traveling companions? / 同行人數 [cite: 56]</label>
+            <input type="text" name="companions">
+            <label>Visited other countries in the past 2 weeks? / 前2週是否去過其他國家 [cite: 60, 62]</label>
+            <input type="text" name="travel_history">
+        </div>
+
+        <button type="button" onclick="saveData()">Save & Download (JSON) / 儲存並下載</button>
+    </form>
+
+    <div class="footer">
+        Taipei City Government Department of Health / 臺北市政府衛生局 [cite: 1]
+    </div>
+</div>
+
+<script>
+    function saveData() {
+        const form = document.getElementById('investigationForm');
+        const formData = new FormData(form);
+        const data = {};
+        formData.forEach((value, key) => {
+            if (data[key]) {
+                if (!Array.isArray(data[key])) data[key] = [data[key]];
+                data[key].push(value);
+            } else {
+                data[key] = value;
+            }
+        });
+
+        // 儲存功能的實作：下載為 JSON 檔案
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Investigation_${data.name || 'Export'}.json`;
+        a.click();
+        
+        alert("Form data saved! / 資料已儲存！");
+    }
+</script>
+
+</body>
+</html>
